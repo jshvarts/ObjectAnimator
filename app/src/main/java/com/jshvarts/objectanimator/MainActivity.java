@@ -1,6 +1,7 @@
 package com.jshvarts.objectanimator;
 
 import android.animation.Animator;
+import android.animation.AnimatorInflater;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -48,7 +49,8 @@ public class MainActivity extends AppCompatActivity {
         ROTATION,
         TRANSLATION,
         SCALE,
-        ALPHA
+        ALPHA,
+        COMBO
     }
 
     private final List<AnimatorType> animatorTypes = new ArrayList<AnimatorType>() {{
@@ -56,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         add(AnimatorType.TRANSLATION);
         add(AnimatorType.SCALE);
         add(AnimatorType.ALPHA);
+        add(AnimatorType.COMBO);
     }};
 
     private AnimatorType currentAnimatorType;
@@ -105,6 +108,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case ALPHA:
                 performAlphaAnimations();
+                break;
+            case COMBO:
+                performComboAnimations();
                 break;
             default:
                 throw new IllegalArgumentException("invalid animatorType " + animatorType);
@@ -248,6 +254,22 @@ public class MainActivity extends AppCompatActivity {
 
         final AnimatorSet sequenceAnimator = new AnimatorSet();
         sequenceAnimator.playSequentially(alphaToTransparent, alphaToOpaque);
+        sequenceAnimator.start();
+
+        Animator anim = (Animator) AnimatorInflater.loadAnimator(this, R.animator.alpha_animator);
+        anim.setTarget(droidBlue);
+        anim.start();
+
+        controlNextAnimatorSetStart(sequenceAnimator);
+    }
+
+    private void performComboAnimations() {
+        Log.d(LOG_TAG, "running performComboAnimations");
+
+        currentAnimatorType = AnimatorType.COMBO;
+
+        AnimatorSet sequenceAnimator = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.alpha_animator);
+        sequenceAnimator.setTarget(droidBlue);
         sequenceAnimator.start();
 
         controlNextAnimatorSetStart(sequenceAnimator);
