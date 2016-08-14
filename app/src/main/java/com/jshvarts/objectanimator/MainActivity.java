@@ -29,6 +29,8 @@ import butterknife.OnClick;
 
 /**
  * https://developer.android.com/guide/topics/graphics/prop-animation.html
+ *
+ * https://android.googlesource.com/platform/development/+/74497f3/samples/devbytes/animation
  */
 public class MainActivity extends AppCompatActivity {
 
